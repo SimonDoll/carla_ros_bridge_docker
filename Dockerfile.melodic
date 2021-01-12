@@ -1,6 +1,9 @@
 FROM nvidia/cudagl:10.2-devel-ubuntu18.04
 
-ARG CARLA_VERSION=0.9.8
+# Adapted from https://github.com/atinfinity/carla_ros_bridge_docker
+# Requires caral 0.9.9 compiled tar.gz and additional maps at build context .
+# files should be called 0.9.9, minor version e.g. 0.9.9.4 is ignored
+ARG CARLA_VERSION=0.9.9
 ENV NVIDIA_VISIBLE_DEVICES ${NVIDIA_VISIBLE_DEVICES:-all}
 ENV NVIDIA_DRIVER_CAPABILITIES ${NVIDIA_DRIVER_CAPABILITIES:+$NVIDIA_DRIVER_CAPABILITIES,}graphics
 
@@ -86,14 +89,13 @@ RUN mkdir -p ~/catkin_ws/src && \
     source /opt/ros/melodic/setup.bash && \
     catkin_init_workspace ~/catkin_ws/src && \
     cd ~/catkin_ws/src && \
-    git clone --recursive https://github.com/carla-simulator/ros-bridge.git -b ${CARLA_VERSION} && \
-    sed -i -e 's/fixed_delta_seconds: 0.05/fixed_delta_seconds: 0.10/' ros-bridge/carla_ros_bridge/config/settings.yaml && \
+    git clone --recursive https://github.com/carla-simulator/ros-bridge.git -b 0.9.8 && \
     cd ~/catkin_ws && \
     catkin_make -DCMAKE_BUILD_TYPE=Release && \
     source ~/catkin_ws/devel/setup.bash
 
 RUN cd /home/$USERNAME && \
-    git clone https://github.com/carla-simulator/scenario_runner.git -b v${CARLA_VERSION} && \
+    git clone https://github.com/carla-simulator/scenario_runner.git && \
     sed -i '/carla/d' scenario_runner/requirements.txt && \
     sudo pip install -r scenario_runner/requirements.txt
 
