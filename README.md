@@ -10,7 +10,8 @@ This is a Dockerfile to use [CARLA ROS bridge](https://github.com/carla-simulato
 
 ## Preparation
 ### Download CARLA Simulator
-Please download the CARLA Simulator and addtional map file from <https://github.com/carla-simulator/carla/releases/tag/0.9.8>.  
+Please download the CARLA Simulator and addtional map file from <https://github.com/carla-simulator/carla/releases/tag/0.9.9>.  
+Rename the file to the major version e.g 0.9.9 (minor patched version e.g. 0.9.9.4 is ignored).
 And, please put CARLA Simulator in the same directory as the Dockerfile.  
 This time, I used the following package.
 
