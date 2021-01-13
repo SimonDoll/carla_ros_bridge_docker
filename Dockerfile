@@ -1,4 +1,4 @@
-FROM nvidia/cudagl:9.2-devel-ubuntu18.04
+FROM nvidia/cudagl:10.2-devel-ubuntu18.04
 
 # Adapted from https://github.com/atinfinity/carla_ros_bridge_docker
 # Requires caral 0.9.9 compiled tar.gz and additional maps at build context .
@@ -63,6 +63,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# get catkin tools
+RUN apt-get update \
+    && apt install wget \
+    && sh -c 'echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list' \
+    && wget -q http://packages.ros.org/ros.key -O - | sudo apt-key add - \
+    && apt-get update \
+    && apt-get install -y python-catkin-tools \
+    && rm -rf /var/lib/apt/lists/*
+
+
 RUN pip install \
         simple-pid \
         numpy \
@@ -74,6 +84,8 @@ RUN rosdep init
 USER $USERNAME
 WORKDIR /home/$USERNAME
 RUN rosdep update
+
+
 COPY CARLA_${CARLA_VERSION}.tar.gz /home/$USERNAME/
 RUN mkdir CARLA_${CARLA_VERSION} && \
     tar xfvz CARLA_${CARLA_VERSION}.tar.gz -C CARLA_${CARLA_VERSION} && \
@@ -84,15 +96,17 @@ RUN tar xfvz AdditionalMaps_${CARLA_VERSION}.tar.gz -C /home/$USERNAME/CARLA_${C
 
 RUN echo "export PYTHONPATH=$PYTHONPATH:~/CARLA_${CARLA_VERSION}/PythonAPI/carla/dist/carla-${CARLA_VERSION}-py2.7-linux-x86_64.egg:~/CARLA_${CARLA_VERSION}/PythonAPI/carla" >> ~/.bashrc
 
+
 SHELL ["/bin/bash", "-c"]
-RUN mkdir -p ~/catkin_ws/src && \
+RUN mkdir -p ~/workspace/src && \
     source /opt/ros/melodic/setup.bash && \
-    catkin_init_workspace ~/catkin_ws/src && \
-    cd ~/catkin_ws/src && \
+    cd ~/workspace && \
+    catkin init && \
+    cd src && \
     git clone --recursive https://github.com/carla-simulator/ros-bridge.git -b 0.9.8 && \
-    cd ~/catkin_ws && \
-    catkin_make -DCMAKE_BUILD_TYPE=Release && \
-    source ~/catkin_ws/devel/setup.bash
+    cd ~/workspace && \
+    catkin build -DCMAKE_BUILD_TYPE=Release && \
+    source ~/workspace/devel/setup.bash
 
 RUN cd /home/$USERNAME && \
     git clone https://github.com/carla-simulator/scenario_runner.git && \
@@ -100,5 +114,5 @@ RUN cd /home/$USERNAME && \
     sudo pip install -r scenario_runner/requirements.txt
 
 RUN echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc && \
-    echo "source ~/catkin_ws/devel/setup.bash" >> ~/.bashrc && \
+    echo "source ~/workspace/devel/setup.bash" >> ~/.bashrc && \
     echo "export SCENARIO_RUNNER_PATH=/home/$USERNAME/scenario_runner" >> ~/.bashrc
