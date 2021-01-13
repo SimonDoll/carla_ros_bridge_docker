@@ -1,4 +1,4 @@
-FROM nvidia/cudagl:10.2-devel-ubuntu18.04
+FROM nvidia/cudagl:9.2-devel-ubuntu18.04
 
 # Adapted from https://github.com/atinfinity/carla_ros_bridge_docker
 # Requires caral 0.9.9 compiled tar.gz and additional maps at build context .

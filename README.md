@@ -15,12 +15,12 @@ Rename the file to the major version e.g 0.9.9 (minor patched version e.g. 0.9.9
 And, please put CARLA Simulator in the same directory as the Dockerfile.  
 This time, I used the following package.
 
-- `CARLA_0.9.8.tar.gz`
-- `AdditionalMaps_0.9.8.tar.gz`
+- `CARLA_0.9.9.4.tar.gz`
+- `AdditionalMaps_0.9.9.4.tar.gz`
 
 ### Build Docker image
 ```shell
-$ docker build -t carla:0.9.8 -f Dockerfile.melodic .
+$ docker build -t carla:0.9.9 -f Dockerfile .
 ```
 
 ### Create Docker container
