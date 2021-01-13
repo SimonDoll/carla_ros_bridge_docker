@@ -34,13 +34,13 @@ $ ./launch_container.sh
 Please launch CARLA Simulator by the following command.
 
 ```shell
-$ cd CARLA_0.9.8
+$ cd CARLA_0.9.9
 $ ./CarlaUE4.sh -windowed -ResX=160 -ResY=120
 ```
 
 #### Set the configuration of CARLA Simulator
 ```shell
-$ cd CARLA_0.9.8/PythonAPI
+$ cd CARLA_0.9.9/PythonAPI
 $ python util/config.py -m Town03 --fps 10
 ```
 
@@ -54,13 +54,13 @@ $ roslaunch carla_ros_bridge carla_ros_bridge_with_example_ego_vehicle.launch ve
 Please launch CARLA Simulator by the following command.
 
 ```shell
-$ cd CARLA_0.9.8
+$ cd CARLA_0.9.9
 $ ./CarlaUE4.sh -windowed -ResX=160 -ResY=120
 ```
 
 #### Set the configuration of CARLA Simulator
 ```shell
-$ cd CARLA_0.9.8/PythonAPI
+$ cd CARLA_0.9.9/PythonAPI
 $ python util/config.py -m Town01 --fps 10
 ```
 
