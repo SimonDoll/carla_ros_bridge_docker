@@ -3,6 +3,8 @@
 ## Introduction
 This is a Dockerfile to use [CARLA ROS bridge](https://github.com/carla-simulator/ros-bridge) on Docker container.
 
+## See the devel branch for carla 0.9.9
+
 ## Requirements
 * NVIDIA graphics driver
 * Docker
